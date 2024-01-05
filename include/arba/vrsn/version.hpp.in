@@ -1,0 +1,11 @@
+#pragma once
+
+#include <arba/vrsn/semantic_version.hpp>
+
+inline namespace @PROJECT_NAMESPACE@
+{
+namespace @PROJECT_BASE_NAME@
+{
+    constexpr semantic_version version("@PROJECT_SEMANTIC_VERSION@");
+}
+}
