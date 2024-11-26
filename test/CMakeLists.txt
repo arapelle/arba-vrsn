@@ -1,7 +1,10 @@
-find_or_fetch_GTest()
 
-add_cpp_library_basic_tests(GTest::gtest_main
-    HEADER_ONLY ${PROJECT_NAME}
+include(cmtk/CppLibraryTests)
+include(GoogleTest)
+
+find_package(GTest CONFIG REQUIRED)
+
+add_cpp_library_basic_tests(${PROJECT_NAME} GTest::gtest_main
     SOURCES
         extract_semantic_version_tests.cpp
         extract_tri_version_tests.cpp
