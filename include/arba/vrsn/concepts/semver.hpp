@@ -1,6 +1,6 @@
 #pragma once
 
-#include "tri_version.hpp"
+#include "numver.hpp"
 
 #include <string_view>
 
@@ -12,7 +12,7 @@ inline namespace concepts
 {
 
 template <typename VersionT>
-concept SemanticVersion = TriVersion<VersionT> && requires(const VersionT& value) {
+concept Semver = Numver<VersionT> && requires(const VersionT& value) {
     {
         value.pre_release_version()
     } -> std::convertible_to<std::string_view>;
