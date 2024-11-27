@@ -6,10 +6,10 @@ find_package(GTest CONFIG REQUIRED)
 
 add_cpp_library_basic_tests(${PROJECT_NAME} GTest::gtest_main
     SOURCES
-        extract_semantic_version_tests.cpp
-        extract_tri_version_tests.cpp
-        tri_version_tests.cpp
-        tri_version_tag_tests.cpp
-        semantic_version_tests.cpp
+        extract_semver_tests.cpp
+        extract_numver_tests.cpp
+        numver_tests.cpp
+        vtag_tests.cpp
+        semver_tests.cpp
         project_version_tests.cpp
 )

@@ -1,4 +1,4 @@
-#include <arba/vrsn/_private/extract_semantic_version.hpp>
+#include <arba/vrsn/_private/extract_semver.hpp>
 #include <gtest/gtest.h>
 
 inline namespace arba
@@ -330,23 +330,23 @@ TEST(extract_semantic_version, check_build_metadata__bad_char__false)
 
 // extract_semantic_version
 
-TEST(extract_semantic_version, extract_semantic_version__valid__true)
+TEST(extract_semantic_version, extract_semver__valid__true)
 {
     std::string_view major, minor, patch, pre_rel, bdata;
     ASSERT_TRUE(
-        extract_semantic_version_("72.20.37-alpha.1+20231114-004100.hope", major, minor, patch, pre_rel, bdata));
+        extract_semver_("72.20.37-alpha.1+20231114-004100.hope", major, minor, patch, pre_rel, bdata));
     ASSERT_EQ(major, "72");
     ASSERT_EQ(minor, "20");
     ASSERT_EQ(patch, "37");
     ASSERT_EQ(pre_rel, "alpha.1");
     ASSERT_EQ(bdata, "20231114-004100.hope");
-    ASSERT_TRUE(extract_semantic_version_("0.1.0+20231114-004300.n1ce", major, minor, patch, pre_rel, bdata));
+    ASSERT_TRUE(extract_semver_("0.1.0+20231114-004300.n1ce", major, minor, patch, pre_rel, bdata));
     ASSERT_EQ(major, "0");
     ASSERT_EQ(minor, "1");
     ASSERT_EQ(patch, "0");
     ASSERT_EQ(pre_rel, "");
     ASSERT_EQ(bdata, "20231114-004300.n1ce");
-    ASSERT_TRUE(extract_semantic_version_("15.17.18", major, minor, patch, pre_rel, bdata));
+    ASSERT_TRUE(extract_semver_("15.17.18", major, minor, patch, pre_rel, bdata));
     ASSERT_EQ(major, "15");
     ASSERT_EQ(minor, "17");
     ASSERT_EQ(patch, "18");
@@ -354,19 +354,19 @@ TEST(extract_semantic_version, extract_semantic_version__valid__true)
     ASSERT_EQ(bdata, "");
 }
 
-TEST(extract_semantic_version, extract_semantic_version__invalid__false)
+TEST(extract_semantic_version, extract_semver__invalid__false)
 {
     std::string_view major, minor, patch, pr, bm;
-    ASSERT_FALSE(extract_semantic_version_("1.20.72#-alpha.1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_("1.20.72-alpha.1#+20231114-004700.fa1lure", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_("1.20.72-alpha.1+20231114-004700.fa1lure#", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_("1.20-alpha.1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_(".1.20.72-alpha.1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_("1.20.72.-alpha.1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_("1.20.72-.alpha.1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_("1.20.72-alpha..1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_("1.20.72-alpha.1.+20231114-004700.fa1lure", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_("1.20.72-alpha.1+.20231114-004700.fa1lure", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_("1.20.72-alpha.1+20231114-004700..fa1lure", major, minor, patch, pr, bm));
-    ASSERT_FALSE(extract_semantic_version_("1.20.72-alpha.1+20231114-004700.fa1lure.", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20.72#-alpha.1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20.72-alpha.1#+20231114-004700.fa1lure", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20.72-alpha.1+20231114-004700.fa1lure#", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20-alpha.1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_(".1.20.72-alpha.1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20.72.-alpha.1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20.72-.alpha.1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20.72-alpha..1+20231114-004700.fa1lure", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20.72-alpha.1.+20231114-004700.fa1lure", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20.72-alpha.1+.20231114-004700.fa1lure", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20.72-alpha.1+20231114-004700..fa1lure", major, minor, patch, pr, bm));
+    ASSERT_FALSE(extract_semver_("1.20.72-alpha.1+20231114-004700.fa1lure.", major, minor, patch, pr, bm));
 }

@@ -15,7 +15,7 @@ set_build_type_ifndef()
 
 set_project_name(NAMESPACE "arba" BASE_NAME "vrsn")
 string(TIMESTAMP configure_datetime "%Y%m%d-%H%M%S" UTC)
-set_project_semantic_version("0.2.0"
+set_project_semantic_version("0.3.0"
     BUILD_METADATA "${configure_datetime}"
 )
 
@@ -42,14 +42,14 @@ configure_headers(configured_headers
 ## Headers:
 set(headers
     include/arba/vrsn/string/string_conversion.hpp
-    include/arba/vrsn/concepts/semantic_version.hpp
-    include/arba/vrsn/concepts/tri_version.hpp
+    include/arba/vrsn/concepts/semver.hpp
+    include/arba/vrsn/concepts/numver.hpp
     include/arba/vrsn/is_compatible_with.hpp
-    include/arba/vrsn/semantic_version.hpp
-    include/arba/vrsn/tri_version.hpp
-    include/arba/vrsn/tri_version_tag.hpp
-    include/arba/vrsn/_private/extract_semantic_version.hpp
-    include/arba/vrsn/_private/extract_tri_version.hpp
+    include/arba/vrsn/semver.hpp
+    include/arba/vrsn/numver.hpp
+    include/arba/vrsn/vtag.hpp
+    include/arba/vrsn/_private/extract_semver.hpp
+    include/arba/vrsn/_private/extract_numver.hpp
 )
 
 ## Add C++ library

@@ -67,20 +67,20 @@ namespace private_
     return false;
 }
 
-[[nodiscard]] constexpr bool extract_tri_version_(std::string_view::const_iterator& iter,
-                                                  std::string_view::const_iterator end_iter, std::string_view& major,
-                                                  std::string_view& minor, std::string_view& patch)
+[[nodiscard]] constexpr bool extract_numver_(std::string_view::const_iterator& iter,
+                                             std::string_view::const_iterator end_iter, std::string_view& major,
+                                             std::string_view& minor, std::string_view& patch)
 {
     return extract_version_number_(iter, end_iter, major, ".", false)
            && extract_version_number_(++iter, end_iter, minor, ".", false)
            && extract_version_number_(++iter, end_iter, patch, "-+", true);
 }
 
-[[nodiscard]] constexpr bool extract_tri_version_(std::string_view version, std::string_view& major,
-                                                  std::string_view& minor, std::string_view& patch)
+[[nodiscard]] constexpr bool extract_numver_(std::string_view version, std::string_view& major,
+                                             std::string_view& minor, std::string_view& patch)
 {
     auto iter = version.cbegin();
-    bool res = extract_tri_version_(iter, version.cend(), major, minor, patch);
+    bool res = extract_numver_(iter, version.cend(), major, minor, patch);
     return res;
 }
 
