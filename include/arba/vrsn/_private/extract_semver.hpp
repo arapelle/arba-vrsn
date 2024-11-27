@@ -1,6 +1,6 @@
 #pragma once
 
-#include "extract_tri_version.hpp"
+#include "extract_numver.hpp"
 
 inline namespace arba
 {
@@ -111,9 +111,9 @@ namespace private_
     return true;
 }
 
-[[nodiscard]] constexpr bool extract_semantic_version_(std::string_view str, std::string_view& major,
-                                                       std::string_view& minor, std::string_view& patch,
-                                                       std::string_view& pre_release, std::string_view& build_metadata)
+[[nodiscard]] constexpr bool extract_semver_(std::string_view str, std::string_view& major,
+                                             std::string_view& minor, std::string_view& patch,
+                                             std::string_view& pre_release, std::string_view& build_metadata)
 {
     pre_release = std::string_view();
     build_metadata = std::string_view();
@@ -121,7 +121,7 @@ namespace private_
     auto iter = str.cbegin();
     const auto end_iter = str.cend();
 
-    if (!extract_tri_version_(iter, end_iter, major, minor, patch))
+    if (!extract_numver_(iter, end_iter, major, minor, patch))
         return false;
     if (iter == end_iter)
         return true;
