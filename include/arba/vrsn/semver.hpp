@@ -1,8 +1,8 @@
 #pragma once
 
-#include "_private/extract_semantic_version.hpp"
-#include "concepts/semantic_version.hpp"
-#include "tri_version.hpp"
+#include "_private/extract_semver.hpp"
+#include "concepts/semver.hpp"
+#include "numver.hpp"
 
 inline namespace arba
 {
@@ -10,48 +10,48 @@ namespace vrsn
 {
 // https://semver.org/spec/v2.0.0.html
 
-class semantic_version : protected tri_version
+class semver : protected numver
 {
 public:
-    constexpr semantic_version(uint64_t major, uint32_t minor, uint32_t patch,
+    constexpr semver(uint64_t major, uint32_t minor, uint32_t patch,
                                std::string_view pre_release = std::string_view(),
                                std::string_view build_metadata = std::string_view());
 
-    constexpr explicit semantic_version(const TriVersion auto& version_core,
+    constexpr explicit semver(const Numver auto& version_core,
                                         std::string_view pre_release = std::string_view(),
                                         std::string_view build_metadata = std::string_view());
 
-    constexpr semantic_version(std::string_view version);
+    constexpr semver(std::string_view version);
 
-    constexpr const tri_version& core() const noexcept { return static_cast<const tri_version&>(*this); }
-    constexpr tri_version& core() noexcept { return static_cast<tri_version&>(*this); }
+    constexpr const numver& core() const noexcept { return static_cast<const numver&>(*this); }
+    constexpr numver& core() noexcept { return static_cast<numver&>(*this); }
     constexpr std::string_view pre_release() const noexcept { return pre_release_; }
     constexpr std::string_view build_metadata() const noexcept { return build_metadata_; }
 
-    using tri_version::is_major_compatible_with;
-    using tri_version::is_minor_compatible_with;
-    using tri_version::is_patch_compatible_with;
-    using tri_version::major;
-    using tri_version::minor;
-    using tri_version::patch;
-    using tri_version::set_major;
-    using tri_version::set_minor;
-    using tri_version::set_patch;
-    using tri_version::up_major;
-    using tri_version::up_minor;
-    using tri_version::up_patch;
+    using numver::is_major_compatible_with;
+    using numver::is_minor_compatible_with;
+    using numver::is_patch_compatible_with;
+    using numver::major;
+    using numver::minor;
+    using numver::patch;
+    using numver::set_major;
+    using numver::set_minor;
+    using numver::set_patch;
+    using numver::up_major;
+    using numver::up_minor;
+    using numver::up_patch;
 
-    inline constexpr bool operator==(const semantic_version& other) const;
-    inline constexpr bool operator<(const semantic_version& other) const;
-    inline constexpr bool operator!=(const semantic_version& other) const { return !(other == *this); }
-    inline constexpr bool operator>(const semantic_version& other) const { return other < *this; }
-    inline constexpr bool operator<=(const semantic_version& other) const { return !(other < *this); }
-    inline constexpr bool operator>=(const semantic_version& other) const { return !(*this < other); }
+    inline constexpr bool operator==(const semver& other) const;
+    inline constexpr bool operator<(const semver& other) const;
+    inline constexpr bool operator!=(const semver& other) const { return !(other == *this); }
+    inline constexpr bool operator>(const semver& other) const { return other < *this; }
+    inline constexpr bool operator<=(const semver& other) const { return !(other < *this); }
+    inline constexpr bool operator>=(const semver& other) const { return !(*this < other); }
 
 private:
     constexpr bool pre_release_is_less_than_(const std::string& right_pr) const;
 
-    static constexpr semantic_version valid_semantic_version_(std::string_view semver);
+    static constexpr semver valid_semantic_version_(std::string_view semver);
     static constexpr std::string_view valid_pre_release_(std::string_view pre_release_version);
     static constexpr std::string_view valid_build_metadata_(std::string_view build_metadata);
 
@@ -60,39 +60,39 @@ private:
     std::string build_metadata_;
 };
 
-constexpr semantic_version::semantic_version(uint64_t major, uint32_t minor, uint32_t patch,
+constexpr semver::semver(uint64_t major, uint32_t minor, uint32_t patch,
                                              std::string_view pre_release, std::string_view build_metadata)
-    : tri_version(major, minor, patch), pre_release_(valid_pre_release_(pre_release)),
+    : numver(major, minor, patch), pre_release_(valid_pre_release_(pre_release)),
       build_metadata_(valid_build_metadata_(build_metadata))
 {
 }
 
-constexpr semantic_version::semantic_version(const TriVersion auto& version_core, std::string_view pre_release,
+constexpr semver::semver(const Numver auto& version_core, std::string_view pre_release,
                                              std::string_view build_metadata)
-    : tri_version(version_core.major(), version_core.minor(), version_core.patch()),
+    : numver(version_core.major(), version_core.minor(), version_core.patch()),
       pre_release_(valid_pre_release_(pre_release)), build_metadata_(valid_build_metadata_(build_metadata))
 {
 }
 
-constexpr semantic_version::semantic_version(std::string_view version)
-    : tri_version(), pre_release_(), build_metadata_()
+constexpr semver::semver(std::string_view version)
+    : numver(), pre_release_(), build_metadata_()
 {
     *this = valid_semantic_version_(version);
 }
 
-inline constexpr bool semantic_version::operator==(const semantic_version& other) const
+inline constexpr bool semver::operator==(const semver& other) const
 {
-    return static_cast<const tri_version&>(*this) == static_cast<const tri_version&>(other)
+    return static_cast<const numver&>(*this) == static_cast<const numver&>(other)
            && pre_release_ == other.pre_release_;
 }
 
-inline constexpr bool semantic_version::operator<(const semantic_version& other) const
+inline constexpr bool semver::operator<(const semver& other) const
 {
-    auto cmp_res = static_cast<const tri_version&>(*this) <=> static_cast<const tri_version&>(other);
+    auto cmp_res = static_cast<const numver&>(*this) <=> static_cast<const numver&>(other);
     return cmp_res < 0 || (cmp_res == 0 && pre_release_is_less_than_(other.pre_release_));
 }
 
-constexpr bool semantic_version::pre_release_is_less_than_(const std::string& right_pr) const
+constexpr bool semver::pre_release_is_less_than_(const std::string& right_pr) const
 {
     if (pre_release_.empty())
         return false;
@@ -188,22 +188,22 @@ constexpr bool semantic_version::pre_release_is_less_than_(const std::string& ri
     return left_is_lt;
 }
 
-constexpr semantic_version semantic_version::valid_semantic_version_(std::string_view semver)
+constexpr semver semver::valid_semantic_version_(std::string_view semver_str)
 {
     std::string_view major, minor, patch, pr, bm;
-    if (!private_::extract_semantic_version_(semver, major, minor, patch, pr, bm)) [[unlikely]]
+    if (!private_::extract_semver_(semver_str, major, minor, patch, pr, bm)) [[unlikely]]
     {
         if (std::is_constant_evaluated())
         {
             compile_time_error("'semver' is not a valid semantic version.");
         }
-        throw std::invalid_argument(std::string(semver));
+        throw std::invalid_argument(std::string(semver_str));
     }
 
-    return semantic_version(stoi64(major), stoi64(minor), stoi64(patch), pr, bm);
+    return semver(stoi64(major), stoi64(minor), stoi64(patch), pr, bm);
 }
 
-constexpr std::string_view semantic_version::valid_pre_release_(std::string_view pre_release_version)
+constexpr std::string_view semver::valid_pre_release_(std::string_view pre_release_version)
 {
     if (!pre_release_version.empty())
     {
@@ -220,7 +220,7 @@ constexpr std::string_view semantic_version::valid_pre_release_(std::string_view
     return pre_release_version;
 }
 
-constexpr std::string_view semantic_version::valid_build_metadata_(std::string_view build_metadata)
+constexpr std::string_view semver::valid_build_metadata_(std::string_view build_metadata)
 {
     if (!build_metadata.empty())
     {
@@ -241,7 +241,7 @@ constexpr std::string_view semantic_version::valid_build_metadata_(std::string_v
 }
 
 template <class CharT>
-struct std::formatter<::arba::vrsn::semantic_version, CharT>
+struct std::formatter<::arba::vrsn::semver, CharT>
 {
     template <class FormatParseContext>
     inline constexpr auto parse(FormatParseContext& ctx)
@@ -250,7 +250,7 @@ struct std::formatter<::arba::vrsn::semantic_version, CharT>
     }
 
     template <class FormatContext>
-    auto format(const ::arba::vrsn::semantic_version& version, FormatContext& ctx) const
+    auto format(const ::arba::vrsn::semver& version, FormatContext& ctx) const
     {
         return std::format_to(ctx.out(), "{}-{}+{}", version.core(), version.pre_release(), version.build_metadata());
     }
