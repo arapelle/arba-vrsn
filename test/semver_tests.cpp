@@ -260,20 +260,16 @@ TEST(semantic_version_tests, version_core__normal__no_exception)
 
 TEST(semantic_version_tests, operator_eq__normal__no_exception)
 {
-    ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"),
-              vrsn::semver(0, 1, 2, "alpha.1", "build-title"));
+    ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"), vrsn::semver(0, 1, 2, "alpha.1", "build-title"));
     ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"), vrsn::semver(0, 1, 2, "alpha.1"));
-    ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"),
-              vrsn::semver("0.1.2-alpha.1+build-title"));
+    ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"), vrsn::semver("0.1.2-alpha.1+build-title"));
     ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"), vrsn::semver("0.1.2-alpha.1"));
 }
 
 TEST(semantic_version_tests, operator_ne__normal__no_exception)
 {
-    ASSERT_NE(vrsn::semver(0, 1, 2, "alpha.1", "build-title"),
-              vrsn::semver(0, 1, 2, "alpha.2", "build-title"));
-    ASSERT_NE(vrsn::semver(0, 1, 3, "alpha.1", "build-title"),
-              vrsn::semver(0, 1, 2, "alpha.1", "build-title"));
+    ASSERT_NE(vrsn::semver(0, 1, 2, "alpha.1", "build-title"), vrsn::semver(0, 1, 2, "alpha.2", "build-title"));
+    ASSERT_NE(vrsn::semver(0, 1, 3, "alpha.1", "build-title"), vrsn::semver(0, 1, 2, "alpha.1", "build-title"));
 }
 
 TEST(semantic_version_tests, operator_lt__normal__no_exception)
@@ -340,7 +336,7 @@ TEST(semantic_version_tests, operator_ge__normal__no_exception)
     ASSERT_TRUE(vrsn::semver("1.2.3") >= vrsn::semver("1.2.3-alpha.6"));
 }
 
-TEST(semantic_version__tests, constexpr__valid_args__no_compile_error)
+TEST(semantic_version_tests, constexpr__valid_args__no_compile_error)
 {
     static constexpr vrsn::semver version_1(0, 1, 2, "0.0", "specific-build");
     static_assert(version_1.major() == 0);
@@ -358,4 +354,45 @@ TEST(semantic_version__tests, constexpr__valid_args__no_compile_error)
 
     static_assert(version_1 != version_2);
     static_assert(version_1 < version_2);
+}
+
+TEST(semantic_version_tests, std_format_semver__x_y_z_pr_bm__no_exception)
+{
+    const vrsn::semver version(1, 2, 3, "alpha.1", "specific-build");
+    const std::string version_str = std::format("{}", version);
+    ASSERT_EQ(version_str, "1.2.3-alpha.1+specific-build");
+}
+
+TEST(semantic_version_tests, std_format_semver__x_y_z_pr__no_exception)
+{
+    const vrsn::semver version(1, 2, 3, "alpha.1");
+    const std::string version_str = std::format("{}", version);
+    ASSERT_EQ(version_str, "1.2.3-alpha.1");
+}
+
+TEST(semantic_version_tests, std_format_semver__x_y_z_bm__no_exception)
+{
+    const vrsn::semver version(1, 2, 3, "", "specific-build");
+    const std::string version_str = std::format("{}", version);
+    ASSERT_EQ(version_str, "1.2.3+specific-build");
+}
+
+TEST(semantic_version_tests, std_format_semver_core__x_y_z_pr_bm__no_exception)
+{
+    const vrsn::semver version(1, 2, 3, "alpha.1", "specific-build");
+    const std::string version_str = std::format("{}", version.core());
+    ASSERT_EQ(version_str, "1.2.3");
+}
+
+TEST(semantic_version_tests, std_format_semver__x_y_z_pr_bm__ctx__no_exception)
+{
+    const vrsn::semver version(1, 2, 3, "alpha.1", "specific-build");
+    std::string version_str = std::format("{:c}", version);
+    ASSERT_EQ(version_str, "1.2.3");
+    version_str = std::format("{:c-p}", version);
+    ASSERT_EQ(version_str, "1.2.3-alpha.1");
+    version_str = std::format("{:c+b}", version);
+    ASSERT_EQ(version_str, "1.2.3+specific-build");
+    version_str = std::format("{:c-p+b}", version);
+    ASSERT_EQ(version_str, "1.2.3-alpha.1+specific-build");
 }

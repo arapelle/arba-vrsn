@@ -333,8 +333,7 @@ TEST(extract_semantic_version, check_build_metadata__bad_char__false)
 TEST(extract_semantic_version, extract_semver__valid__true)
 {
     std::string_view major, minor, patch, pre_rel, bdata;
-    ASSERT_TRUE(
-        extract_semver_("72.20.37-alpha.1+20231114-004100.hope", major, minor, patch, pre_rel, bdata));
+    ASSERT_TRUE(extract_semver_("72.20.37-alpha.1+20231114-004100.hope", major, minor, patch, pre_rel, bdata));
     ASSERT_EQ(major, "72");
     ASSERT_EQ(minor, "20");
     ASSERT_EQ(patch, "37");

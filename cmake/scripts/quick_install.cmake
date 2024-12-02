@@ -1,6 +1,6 @@
 # cmake -P quick_install.cmake
 
-set(project "arba-core")
+set(project "arba-vrsn")
 
 function(get_script_args script_args)
     set(sc_args)

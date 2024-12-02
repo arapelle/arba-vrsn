@@ -111,9 +111,9 @@ namespace private_
     return true;
 }
 
-[[nodiscard]] constexpr bool extract_semver_(std::string_view str, std::string_view& major,
-                                             std::string_view& minor, std::string_view& patch,
-                                             std::string_view& pre_release, std::string_view& build_metadata)
+[[nodiscard]] constexpr bool extract_semver_(std::string_view str, std::string_view& major, std::string_view& minor,
+                                             std::string_view& patch, std::string_view& pre_release,
+                                             std::string_view& build_metadata)
 {
     pre_release = std::string_view();
     build_metadata = std::string_view();

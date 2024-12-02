@@ -1,8 +1,8 @@
 # Concept #
 
 A C++ library providing version classes.
-- tri version: 0.1.0
-- semantic_version: 0.1.0, 0.1.0-alpha.1+metadata (https://semver.org/spec/v2.0.0.html)
+- numver: 0.1.0
+- semver: 0.1.0, 0.1.0-alpha.1+metadata (https://semver.org/spec/v2.0.0.html)
 
 # Install #
 ## Requirements ##
@@ -43,21 +43,18 @@ cmake -P uninstall.cmake
 # How to use
 ## Example - Use a semantic version
 ```c++
-#include <arba/vrsn/semantic_version.hpp>
+#include <arba/vrsn/semver.hpp>
 #include <arba/vrsn/version.hpp>
 #include <cstdlib>
 #include <iostream>
 
 int main()
 {
-    vrsn::semantic_version ver("0.1.0-dev+metadata");
+    vrsn::semver ver("0.1.0-dev+metadata");
     std::cout << std::format("version-{}", ver) << std::endl;
     return EXIT_SUCCESS;
 }
 ```
-
-## Example - Using *arba-core* in a CMake project
-See *basic_cmake_project* in example, and more specifically the *CMakeLists.txt* to see how to use *arba-vrsn* in your CMake projects.
 
 # License
 

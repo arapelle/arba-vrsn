@@ -13,13 +13,15 @@ namespace vrsn
 class semver : protected numver
 {
 public:
+    // clang-format off
     constexpr semver(uint64_t major, uint32_t minor, uint32_t patch,
-                               std::string_view pre_release = std::string_view(),
-                               std::string_view build_metadata = std::string_view());
+                     std::string_view pre_release = std::string_view(),
+                     std::string_view build_metadata = std::string_view());
 
     constexpr explicit semver(const Numver auto& version_core,
-                                        std::string_view pre_release = std::string_view(),
-                                        std::string_view build_metadata = std::string_view());
+                              std::string_view pre_release = std::string_view(),
+                              std::string_view build_metadata = std::string_view());
+    // clang-format on
 
     constexpr semver(std::string_view version);
 
@@ -60,30 +62,27 @@ private:
     std::string build_metadata_;
 };
 
-constexpr semver::semver(uint64_t major, uint32_t minor, uint32_t patch,
-                                             std::string_view pre_release, std::string_view build_metadata)
+constexpr semver::semver(uint64_t major, uint32_t minor, uint32_t patch, std::string_view pre_release,
+                         std::string_view build_metadata)
     : numver(major, minor, patch), pre_release_(valid_pre_release_(pre_release)),
       build_metadata_(valid_build_metadata_(build_metadata))
 {
 }
 
-constexpr semver::semver(const Numver auto& version_core, std::string_view pre_release,
-                                             std::string_view build_metadata)
+constexpr semver::semver(const Numver auto& version_core, std::string_view pre_release, std::string_view build_metadata)
     : numver(version_core.major(), version_core.minor(), version_core.patch()),
       pre_release_(valid_pre_release_(pre_release)), build_metadata_(valid_build_metadata_(build_metadata))
 {
 }
 
-constexpr semver::semver(std::string_view version)
-    : numver(), pre_release_(), build_metadata_()
+constexpr semver::semver(std::string_view version) : numver(), pre_release_(), build_metadata_()
 {
     *this = valid_semantic_version_(version);
 }
 
 inline constexpr bool semver::operator==(const semver& other) const
 {
-    return static_cast<const numver&>(*this) == static_cast<const numver&>(other)
-           && pre_release_ == other.pre_release_;
+    return static_cast<const numver&>(*this) == static_cast<const numver&>(other) && pre_release_ == other.pre_release_;
 }
 
 inline constexpr bool semver::operator<(const semver& other) const
@@ -244,14 +243,62 @@ template <class CharT>
 struct std::formatter<::arba::vrsn::semver, CharT>
 {
     template <class FormatParseContext>
-    inline constexpr auto parse(FormatParseContext& ctx)
+    constexpr auto parse(FormatParseContext& ctx)
     {
-        return ctx.begin();
+        auto iter = ctx.begin();
+        if (iter == ctx.end())
+            return iter;
+
+        if (*iter == 'c')
+        {
+            ++iter;
+            switch (*iter)
+            {
+            case '}':
+                pr_ = false;
+                bm_ = false;
+                break;
+            case '-':
+                ++iter;
+                if (*iter == 'p')
+                {
+                    ++iter;
+                    switch (*iter)
+                    {
+                    case '}':
+                        bm_ = false;
+                        break;
+                    case '+':
+                        ++iter;
+                        if (*iter == 'b')
+                            ++iter;
+                        break;
+                    }
+                }
+                break;
+            case '+':
+                pr_ = false;
+                ++iter;
+                if (*iter == 'b')
+                    ++iter;
+                break;
+            }
+        }
+        return iter; // expect `}` at this position, otherwise, it's error! exception!
     }
 
     template <class FormatContext>
     auto format(const ::arba::vrsn::semver& version, FormatContext& ctx) const
     {
-        return std::format_to(ctx.out(), "{}-{}+{}", version.core(), version.pre_release(), version.build_metadata());
+        auto iter = std::format_to(ctx.out(), "{}", version.core());
+        if (pr_ && !version.pre_release().empty())
+            iter = std::format_to(iter, "-{}", version.pre_release());
+        if (bm_ && !version.build_metadata().empty())
+            iter = std::format_to(iter, "+{}", version.build_metadata());
+        return iter;
     }
+
+private:
+    bool pr_{ true };
+    bool bm_{ true };
 };
