@@ -244,14 +244,62 @@ template <class CharT>
 struct std::formatter<::arba::vrsn::semver, CharT>
 {
     template <class FormatParseContext>
-    inline constexpr auto parse(FormatParseContext& ctx)
+    constexpr auto parse(FormatParseContext& ctx)
     {
-        return ctx.begin();
+        auto iter = ctx.begin();
+        if (iter == ctx.end())
+            return iter;
+
+        if (*iter == 'c')
+        {
+            ++iter;
+            switch (*iter)
+            {
+            case '}':
+                pr_ = false;
+                bm_ = false;
+                break;
+            case '-':
+                ++iter;
+                if (*iter == 'p')
+                {
+                    ++iter;
+                    switch (*iter)
+                    {
+                    case '}':
+                        bm_ = false;
+                        break;
+                    case '+':
+                        ++iter;
+                        if (*iter == 'b')
+                            ++iter;
+                        break;
+                    }
+                }
+                break;
+            case '+':
+                pr_ = false;
+                ++iter;
+                if (*iter == 'b')
+                    ++iter;
+                break;
+            }
+        }
+        return iter;  // expect `}` at this position, otherwise, it's error! exception!
     }
 
     template <class FormatContext>
     auto format(const ::arba::vrsn::semver& version, FormatContext& ctx) const
     {
-        return std::format_to(ctx.out(), "{}-{}+{}", version.core(), version.pre_release(), version.build_metadata());
+        auto iter = std::format_to(ctx.out(), "{}", version.core());
+        if (pr_ && !version.pre_release().empty())
+            iter = std::format_to(iter, "-{}", version.pre_release());
+        if (bm_ && !version.build_metadata().empty())
+            iter = std::format_to(iter, "+{}", version.build_metadata());
+        return iter;
     }
+
+private:
+    bool pr_{ true };
+    bool bm_{ true };
 };
