@@ -260,20 +260,16 @@ TEST(semantic_version_tests, version_core__normal__no_exception)
 
 TEST(semantic_version_tests, operator_eq__normal__no_exception)
 {
-    ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"),
-              vrsn::semver(0, 1, 2, "alpha.1", "build-title"));
+    ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"), vrsn::semver(0, 1, 2, "alpha.1", "build-title"));
     ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"), vrsn::semver(0, 1, 2, "alpha.1"));
-    ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"),
-              vrsn::semver("0.1.2-alpha.1+build-title"));
+    ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"), vrsn::semver("0.1.2-alpha.1+build-title"));
     ASSERT_EQ(vrsn::semver(0, 1, 2, "alpha.1", "build-title"), vrsn::semver("0.1.2-alpha.1"));
 }
 
 TEST(semantic_version_tests, operator_ne__normal__no_exception)
 {
-    ASSERT_NE(vrsn::semver(0, 1, 2, "alpha.1", "build-title"),
-              vrsn::semver(0, 1, 2, "alpha.2", "build-title"));
-    ASSERT_NE(vrsn::semver(0, 1, 3, "alpha.1", "build-title"),
-              vrsn::semver(0, 1, 2, "alpha.1", "build-title"));
+    ASSERT_NE(vrsn::semver(0, 1, 2, "alpha.1", "build-title"), vrsn::semver(0, 1, 2, "alpha.2", "build-title"));
+    ASSERT_NE(vrsn::semver(0, 1, 3, "alpha.1", "build-title"), vrsn::semver(0, 1, 2, "alpha.1", "build-title"));
 }
 
 TEST(semantic_version_tests, operator_lt__normal__no_exception)
