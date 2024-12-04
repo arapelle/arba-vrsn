@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.26)
 
+# EXTERNAL DEPENDENCIES
+
+add_subdirectory(external)
+
 # CMAKE INCLUDES
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/external/cmake/)
@@ -23,11 +27,6 @@ project(${PROJECT_NAME}
         HOMEPAGE_URL "https://github.com/arapelle/arba-vrsn"
         LANGUAGES CXX)
 message(STATUS "PROJECT : ${PROJECT_NAME} ${PROJECT_SEMANTIC_VERSION} ${CMAKE_BUILD_TYPE}")
-include(CTest)
-
-# Add external dependencies (submodules and fetch/find packages)
-
-add_subdirectory(external)
 
 # C++ LIBRARY
 
