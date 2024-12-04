@@ -15,7 +15,7 @@ set_build_type_ifndef()
 
 set_project_name(NAMESPACE "arba" BASE_NAME "vrsn")
 string(TIMESTAMP configure_datetime "%Y%m%d-%H%M%S" UTC)
-set_project_semantic_version("0.4.0" BUILD_METADATA "${configure_datetime}")
+set_project_semantic_version("0.4.1" PRE_RELEASE "dev" BUILD_METADATA "${configure_datetime}")
 
 project(${PROJECT_NAME}
         VERSION ${PROJECT_VERSION}
