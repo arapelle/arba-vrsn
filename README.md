@@ -19,7 +19,19 @@ Testing Libraries (optional):
 ## Clone
 
 ```
-git clone https://github.com/arapelle/arba-vrsn --recurse-submodules
+git clone https://github.com/arapelle/arba-vrsn
+```
+
+## Use with `conan`
+
+Create the conan package.
+```
+conan create . --build=missing -c
+```
+Add a requirement in your conanfile project file.
+```python
+    def requirements(self):
+        self.requires("arba-vrsn/0.4.1")
 ```
 
 ## Quick Install ##
