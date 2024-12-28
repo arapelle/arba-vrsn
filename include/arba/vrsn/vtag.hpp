@@ -76,5 +76,5 @@ public:
     }
 };
 
-}
-}
+} // namespace vrsn
+} // namespace arba

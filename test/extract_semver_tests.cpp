@@ -15,9 +15,9 @@ namespace private_
     return res;
 }
 
-}
-}
-}
+} // namespace private_
+} // namespace vrsn
+} // namespace arba
 
 using namespace vrsn::private_;
 

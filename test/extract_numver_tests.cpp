@@ -15,9 +15,9 @@ namespace private_
     return extract_version_number_(iter, version.cend(), num_sv, sep, end_is_ok);
 }
 
-}
-}
-}
+} // namespace private_
+} // namespace vrsn
+} // namespace arba
 
 using namespace vrsn::private_;
 

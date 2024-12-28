@@ -23,5 +23,5 @@ inline constexpr bool is_patch_compatible_with(const Numver auto& lv, const Numv
     return lv.major() == rv.major() && lv.minor() == rv.minor() && lv.patch() == rv.patch();
 }
 
-}
-}
+} // namespace vrsn
+} // namespace arba
