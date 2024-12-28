@@ -138,6 +138,6 @@ namespace private_
     return check_build_metadata_(build_metadata);
 }
 
-}
-}
-}
+} // namespace private_
+} // namespace vrsn
+} // namespace arba

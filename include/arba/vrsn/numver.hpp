@@ -104,8 +104,8 @@ constexpr numver numver::make_instance_(std::string_view version_str)
     return numver(stoi64(major), stoi64(minor), stoi64(patch));
 }
 
-}
-}
+} // namespace vrsn
+} // namespace arba
 
 template <class CharT>
 struct std::formatter<::arba::vrsn::numver, CharT>

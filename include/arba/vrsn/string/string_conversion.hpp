@@ -47,5 +47,5 @@ static constexpr int64_t stoi64(std::string_view str)
     return sign * result;
 }
 
-}
-}
+} // namespace vrsn
+} // namespace arba

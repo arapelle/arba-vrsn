@@ -13,14 +13,10 @@ inline namespace concepts
 
 template <typename VersionT>
 concept Semver = Numver<VersionT> && requires(const VersionT& value) {
-    {
-        value.pre_release_version()
-    } -> std::convertible_to<std::string_view>;
-    {
-        value.build_metadata()
-    } -> std::convertible_to<std::string_view>;
+    { value.pre_release_version() } -> std::convertible_to<std::string_view>;
+    { value.build_metadata() } -> std::convertible_to<std::string_view>;
 };
 
-}
-}
-}
+} // namespace concepts
+} // namespace vrsn
+} // namespace arba

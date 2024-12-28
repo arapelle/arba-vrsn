@@ -236,8 +236,8 @@ constexpr std::string_view semver::valid_build_metadata_(std::string_view build_
     return build_metadata;
 }
 
-}
-}
+} // namespace vrsn
+} // namespace arba
 
 template <class CharT>
 struct std::formatter<::arba::vrsn::semver, CharT>
